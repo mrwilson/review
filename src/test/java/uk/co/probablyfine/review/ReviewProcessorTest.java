@@ -8,28 +8,25 @@ import org.junit.Test;
 
 public class ReviewProcessorTest {
 
-    private final ReviewProcessor processor = new ReviewProcessor();
+    private final StringBuilder stringBuilder = new StringBuilder();
+    private final ReviewProcessor processor = new ReviewProcessor(stringBuilder::append);
     private final String className = ReviewProcessorTest.class.getSimpleName();
 
     @Test
     public void shouldDoNothingIfReviewNotNeeded() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        StringBuilder builder = new StringBuilder();
+        processor.checkElementForReview(className, tomorrow.toString());
 
-        processor.checkElementForReview(className, tomorrow.toString(), builder::append);
-
-        assertThat(builder.length(), is(0));
+        assertThat(stringBuilder.length(), is(0));
     }
 
     @Test
     public void shouldLogIfCodeIsDueForReview() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
 
-        StringBuilder builder = new StringBuilder();
+        processor.checkElementForReview(className, yesterday.toString());
 
-        processor.checkElementForReview(className, yesterday.toString(), builder::append);
-
-        assertThat(builder.toString(), is("Code due for review: ReviewProcessorTest"));
+        assertThat(stringBuilder.toString(), is("Code due for review: ReviewProcessorTest"));
     }
 }

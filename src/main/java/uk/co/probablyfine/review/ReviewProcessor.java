@@ -17,9 +17,18 @@ import javax.lang.model.element.TypeElement;
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class ReviewProcessor extends AbstractProcessor {
 
+    private final Consumer<String> writer;
+
+    public ReviewProcessor() {
+        this(System.out::println);
+    }
+
+    public ReviewProcessor(Consumer<String> writer) {
+        this.writer = writer;
+    }
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
         roundEnv.getElementsAnnotatedWith(Review.class).forEach(this::processElement);
 
         return false;
@@ -27,17 +36,15 @@ public class ReviewProcessor extends AbstractProcessor {
 
     private void processElement(Element element) {
         String className = element.getSimpleName().toString();
-
         String lastReviewed = element.getAnnotation(Review.class).lastReviewed();
 
-        checkElementForReview(className, lastReviewed, System.out::println);
+        checkElementForReview(className, lastReviewed);
     }
 
-    void checkElementForReview(String className, String lastReviewed, Consumer<String> writer) {
+    void checkElementForReview(String className, String lastReviewed) {
         LocalDate reviewDate = LocalDate.parse(lastReviewed);
 
         if (reviewDate.isBefore(now())) {
-
             writer.accept(String.format("Code due for review: %s", className));
         }
     }
