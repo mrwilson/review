@@ -14,7 +14,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 @SupportedAnnotationTypes("uk.co.probablyfine.review.Review")
-@SupportedSourceVersion(SourceVersion.RELEASE_11)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class ReviewProcessor extends AbstractProcessor {
 
     private final Consumer<String> writer;
