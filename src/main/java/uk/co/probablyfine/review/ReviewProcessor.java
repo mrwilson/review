@@ -3,9 +3,35 @@ package uk.co.probablyfine.review;
 import static java.time.LocalDate.now;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.function.Consumer;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 
-public class ReviewProcessor {
+@SupportedAnnotationTypes("uk.co.probablyfine.review.Review")
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
+public class ReviewProcessor extends AbstractProcessor {
+
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+
+        roundEnv.getElementsAnnotatedWith(Review.class).forEach(this::processElement);
+
+        return false;
+    }
+
+    private void processElement(Element element) {
+        String className = element.getSimpleName().toString();
+
+        String lastReviewed = element.getAnnotation(Review.class).lastReviewed();
+
+        checkElementForReview(className, lastReviewed, System.out::println);
+    }
 
     void checkElementForReview(String className, String lastReviewed, Consumer<String> writer) {
         LocalDate reviewDate = LocalDate.parse(lastReviewed);
