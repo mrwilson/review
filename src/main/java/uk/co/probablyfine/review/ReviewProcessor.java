@@ -57,6 +57,8 @@ public class ReviewProcessor extends AbstractProcessor {
 
         if ("day".equals(amountAndPeriod[1]) || "days".equals(amountAndPeriod[1])) {
             return Period.ofDays(Integer.valueOf(amountAndPeriod[0]));
+        } else if ("week".equals(amountAndPeriod[1])) {
+            return Period.ofWeeks(Integer.valueOf(amountAndPeriod[0]));
         } else {
             return Period.ofWeeks(2);
         }

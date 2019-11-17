@@ -54,6 +54,17 @@ public class ReviewProcessorTest {
         assertThat(stringBuilder.toString(), is("Code due for review: ReviewProcessorTest"));
     }
 
+    @Test
+    public void shouldLogIfCodeIsDueForReview_withCustomReviewIn_week() {
+        LocalDate beforeThreshold = LocalDate.now().minusWeeks(2);
+
+        Review annotation = reviewAnnotation(beforeThreshold.toString(), "1 week");
+
+        processor.checkElementForReview(className, annotation);
+
+        assertThat(stringBuilder.toString(), is("Code due for review: ReviewProcessorTest"));
+    }
+
     private Review reviewAnnotation(String toString) {
         return reviewAnnotation(toString, "2 weeks");
     }
