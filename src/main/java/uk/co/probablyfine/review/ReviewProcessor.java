@@ -36,13 +36,12 @@ public class ReviewProcessor extends AbstractProcessor {
 
     private void processElement(Element element) {
         String className = element.getSimpleName().toString();
-        String lastReviewed = element.getAnnotation(Review.class).lastReviewed();
 
-        checkElementForReview(className, lastReviewed);
+        checkElementForReview(className, element.getAnnotation(Review.class));
     }
 
-    void checkElementForReview(String className, String lastReviewed) {
-        LocalDate reviewDate = LocalDate.parse(lastReviewed);
+    void checkElementForReview(String className, Review annotation) {
+        LocalDate reviewDate = LocalDate.parse(annotation.lastReviewed());
 
         if (reviewDate.isBefore(now().minusWeeks(2))) {
             writer.accept(String.format("Code due for review: %s", className));
