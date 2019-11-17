@@ -14,18 +14,18 @@ public class ReviewProcessorTest {
 
     @Test
     public void shouldDoNothingIfReviewNotNeeded() {
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        LocalDate oneDayBeforeDefaultThreshold = LocalDate.now().minusWeeks(2).plusDays(1);
 
-        processor.checkElementForReview(className, tomorrow.toString());
+        processor.checkElementForReview(className, oneDayBeforeDefaultThreshold.toString());
 
         assertThat(stringBuilder.length(), is(0));
     }
 
     @Test
     public void shouldLogIfCodeIsDueForReview() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate defaultThreshold = LocalDate.now().minusWeeks(2).minusDays(1);
 
-        processor.checkElementForReview(className, yesterday.toString());
+        processor.checkElementForReview(className, defaultThreshold.toString());
 
         assertThat(stringBuilder.toString(), is("Code due for review: ReviewProcessorTest"));
     }

@@ -44,7 +44,7 @@ public class ReviewProcessor extends AbstractProcessor {
     void checkElementForReview(String className, String lastReviewed) {
         LocalDate reviewDate = LocalDate.parse(lastReviewed);
 
-        if (reviewDate.isBefore(now())) {
+        if (reviewDate.isBefore(now().minusWeeks(2))) {
             writer.accept(String.format("Code due for review: %s", className));
         }
     }
