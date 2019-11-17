@@ -3,6 +3,8 @@ package uk.co.probablyfine.review;
 import static java.time.LocalDate.now;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.TemporalAmount;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.annotation.processing.AbstractProcessor;
@@ -43,8 +45,20 @@ public class ReviewProcessor extends AbstractProcessor {
     void checkElementForReview(String className, Review annotation) {
         LocalDate reviewDate = LocalDate.parse(annotation.lastReviewed());
 
-        if (reviewDate.isBefore(now().minusWeeks(2))) {
+        TemporalAmount threshold = thresholdFrom(annotation.reviewIn());
+
+        if (reviewDate.isBefore(now().minus(threshold))) {
             writer.accept(String.format("Code due for review: %s", className));
+        }
+    }
+
+    private TemporalAmount thresholdFrom(String reviewIn) {
+        String[] amountAndPeriod = reviewIn.split(" ");
+
+        if ("day".equals(amountAndPeriod[1])) {
+            return Period.ofDays(Integer.valueOf(amountAndPeriod[0]));
+        } else {
+            return Period.ofWeeks(2);
         }
     }
 }
