@@ -65,6 +65,9 @@ public class ReviewProcessor extends AbstractProcessor {
             case "week":
             case "weeks":
                 return Period.ofWeeks(parseInt(amountAndPeriod[0]));
+            case "month":
+            case "months":
+                return Period.ofMonths(parseInt(amountAndPeriod[0]));
             default:
                 throw new RuntimeException("Could not parse reviewIn threshold: " + reviewIn);
         }
