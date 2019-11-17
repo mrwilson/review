@@ -55,7 +55,7 @@ public class ReviewProcessor extends AbstractProcessor {
     private TemporalAmount thresholdFrom(String reviewIn) {
         String[] amountAndPeriod = reviewIn.split(" ");
 
-        if ("day".equals(amountAndPeriod[1])) {
+        if ("day".equals(amountAndPeriod[1]) || "days".equals(amountAndPeriod[1])) {
             return Period.ofDays(Integer.valueOf(amountAndPeriod[0]));
         } else {
             return Period.ofWeeks(2);

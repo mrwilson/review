@@ -33,10 +33,21 @@ public class ReviewProcessorTest {
     }
 
     @Test
-    public void shouldLogIfCodeIsDueForReview_withCustomReviewIn() {
+    public void shouldLogIfCodeIsDueForReview_withCustomReviewIn_day() {
         LocalDate beforeThreshold = LocalDate.now().minusDays(2);
 
         Review annotation = reviewAnnotation(beforeThreshold.toString(), "1 day");
+
+        processor.checkElementForReview(className, annotation);
+
+        assertThat(stringBuilder.toString(), is("Code due for review: ReviewProcessorTest"));
+    }
+
+    @Test
+    public void shouldLogIfCodeIsDueForReview_withCustomReviewIn_days() {
+        LocalDate beforeThreshold = LocalDate.now().minusDays(2);
+
+        Review annotation = reviewAnnotation(beforeThreshold.toString(), "1 days");
 
         processor.checkElementForReview(className, annotation);
 
