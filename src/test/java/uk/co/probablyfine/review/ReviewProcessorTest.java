@@ -12,6 +12,17 @@ public class ReviewProcessorTest {
     private final String className = ReviewProcessorTest.class.getSimpleName();
 
     @Test
+    public void shouldDoNothingIfReviewNotNeeded() {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+
+        StringBuilder builder = new StringBuilder();
+
+        processor.checkElementForReview(className, tomorrow.toString(), builder::append);
+
+        assertThat(builder.length(), is(0));
+    }
+
+    @Test
     public void shouldLogIfCodeIsDueForReview() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
 
