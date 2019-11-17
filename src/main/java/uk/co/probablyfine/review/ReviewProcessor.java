@@ -1,5 +1,6 @@
 package uk.co.probablyfine.review;
 
+import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.now;
 
 import java.time.LocalDate;
@@ -56,17 +57,16 @@ public class ReviewProcessor extends AbstractProcessor {
         String[] amountAndPeriod = reviewIn.split(" ");
 
         String period = amountAndPeriod[1];
-        int amount = Integer.parseInt(amountAndPeriod[0]);
 
         switch (period) {
             case "day":
             case "days":
-                return Period.ofDays(amount);
+                return Period.ofDays(parseInt(amountAndPeriod[0]));
             case "week":
             case "weeks":
-                return Period.ofWeeks(amount);
+                return Period.ofWeeks(parseInt(amountAndPeriod[0]));
             default:
-                return Period.ofWeeks(2);
+                throw new RuntimeException("Could not parse reviewIn threshold: " + reviewIn);
         }
     }
 }

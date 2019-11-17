@@ -76,6 +76,20 @@ public class ReviewProcessorTest {
         assertThat(stringBuilder.toString(), is("Code due for review: ReviewProcessorTest"));
     }
 
+    @Test
+    public void shouldLogIfCodeIsDueForReview_withCustomReview_garbage() {
+        LocalDate beforeThreshold = LocalDate.now();
+
+        Review annotation = reviewAnnotation(beforeThreshold.toString(), "woogly boogly");
+
+        try {
+            processor.checkElementForReview(className, annotation);
+            fail("Expecting exception");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("Could not parse reviewIn threshold: woogly boogly"));
+        }
+    }
+
     private Review reviewAnnotation(String toString) {
         return reviewAnnotation(toString, "2 weeks");
     }
