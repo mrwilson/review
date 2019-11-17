@@ -1,8 +1,10 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.diffplug.gradle.spotless' version '3.24.2'
 }
 
+apply plugin: 'com.diffplug.gradle.spotless'
 group 'uk.co.probablyfine'
 version '1.0-SNAPSHOT'
 
@@ -14,6 +16,12 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.7').aosp()
+    }
 }
 
 publishing {
