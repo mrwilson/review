@@ -55,12 +55,18 @@ public class ReviewProcessor extends AbstractProcessor {
     private TemporalAmount thresholdFrom(String reviewIn) {
         String[] amountAndPeriod = reviewIn.split(" ");
 
-        if ("day".equals(amountAndPeriod[1]) || "days".equals(amountAndPeriod[1])) {
-            return Period.ofDays(Integer.valueOf(amountAndPeriod[0]));
-        } else if ("week".equals(amountAndPeriod[1]) || "weeks".equals(amountAndPeriod[1])) {
-            return Period.ofWeeks(Integer.valueOf(amountAndPeriod[0]));
-        } else {
-            return Period.ofWeeks(2);
+        String period = amountAndPeriod[1];
+        int amount = Integer.parseInt(amountAndPeriod[0]);
+
+        switch (period) {
+            case "day":
+            case "days":
+                return Period.ofDays(amount);
+            case "week":
+            case "weeks":
+                return Period.ofWeeks(amount);
+            default:
+                return Period.ofWeeks(2);
         }
     }
 }
